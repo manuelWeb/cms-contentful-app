@@ -14,6 +14,9 @@ export default function Index({ preview, }) {
         </Head>
 
         <Container>
+          <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
+            Home.
+          </h1>
 
         </Container>
       </Layout>
