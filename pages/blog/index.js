@@ -7,36 +7,45 @@ import Layout from '../../components/layout'
 import { getAllPostsForHome } from '../../lib/api'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
+import BlogLayout from '../../components/blog-layout'
 
-const blog = ({ preview, allPosts }) => {
+const Blog = ({ preview, allPosts }) => {
   const heroPost = allPosts[0]
   const morePosts = allPosts.slice(1)
   return (
     <>
-      <Layout preview={preview}>
-        <Head>
-          <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
-        </Head>
-        <Container>
-          <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </Container>
-      </Layout>
+      <Head>
+        <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
+      </Head>
+      <Container>
+        <Intro />
+        {heroPost && (
+          <HeroPost
+            title={heroPost.title}
+            coverImage={heroPost.coverImage}
+            date={heroPost.date}
+            author={heroPost.author}
+            slug={heroPost.slug}
+            excerpt={heroPost.excerpt}
+          />
+        )}
+        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      </Container>
     </>
   );
 };
 
-export default blog;
+export default Blog;
+
+Blog.getLayout = function getLayout(page) {
+  const { preview, allPosts } = page.props
+
+  return (
+    <Layout preview={preview}>
+      <BlogLayout allPosts={allPosts}>{page}</BlogLayout>
+    </Layout>
+  )
+}
 
 export async function getStaticProps({ preview = false }) {
   const allPosts = (await getAllPostsForHome(preview)) ?? []
