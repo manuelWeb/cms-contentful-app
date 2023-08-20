@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   images: {
-    // loader: 'custom',
+    domains: ['assets.acme.com', 'images.ctfassets.net'],
   },
 }
