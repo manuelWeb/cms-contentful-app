@@ -2,8 +2,10 @@ import { getPreviewPostBySlug } from '../../lib/api'
 
 export default async function preview(req, res) {
   const { secret, slug } = req.query
+  console.log('req.query', req.query);
 
-  if (secret !== process.env.CONTENTFUL_PREVIEW_SECRET || !slug) {
+  // if (secret !== process.env.CONTENTFUL_PREVIEW_SECRET || !slug) {
+  if (secret !== process.env.CONTENTFUL_PREVIEW_SECRET) {
     return res.status(401).json({ message: 'Invalid token' })
   }
 
@@ -11,9 +13,10 @@ export default async function preview(req, res) {
   const post = await getPreviewPostBySlug(slug)
 
   // If the slug doesn't exist prevent preview mode from being enabled
-  if (!post) {
-    return res.status(401).json({ message: 'Invalid slug' })
-  }
+  // on ne test pas le slug pour avoir le mode preview global. Mais l'idée est sympa quand on connait tous les slugs et ou pour avoir un mode preview par section.
+  // if (!post) {
+  //   return res.status(401).json({ message: 'Invalid slug' })
+  // }
 
   // Enable Draft Mode by setting the cookie
   res.setDraftMode({ enable: true })
@@ -21,7 +24,10 @@ export default async function preview(req, res) {
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
   // res.writeHead(307, { Location: `/posts/${post.slug}` })
-  const url = `/posts/${post.slug}`
+  // const url = `/posts/${post.slug}`
+  // on déclenche le mode preview depuis cette url pour tout le site (toutes les pages)
+  // http://localhost:3000/api/preview?secret=test
+  const url = `/`
   res.setHeader('Content-Type', 'text/html')
   res.write(
     `<!DOCTYPE html><html><head><meta http-equiv="Refresh" content="0; url=${url}" />
