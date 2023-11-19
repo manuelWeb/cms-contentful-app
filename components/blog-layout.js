@@ -4,12 +4,12 @@ import Link from 'next/link';
 const blogLayout = ({ children, allPosts }) => {
   const slugs = allPosts.map(({ slug }) => slug)
   return (
-    <>
-      <ul className='flex'>
+    <nav>
+      <ul className='flex flex-wrap lg:flex-no-wrap items-stretch'>
         {
           slugs.map((slug) =>
-            <li className='flex-1 mr-2' key={slug}>
-              <Link href={`posts/${slug}`} className="text-center block border border-blue-500 rounded py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white">
+            <li className='flex-1 p-1' key={slug}>
+              <Link href={`posts/${slug}`} className="flex h-full justify-center items-center text-center border border-blue-500 rounded py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white">
                 {slug}
               </Link>
             </li>
@@ -18,7 +18,7 @@ const blogLayout = ({ children, allPosts }) => {
       </ul>
 
       {children}
-    </>
+    </nav>
   );
 };
 
